@@ -22,7 +22,7 @@ belongs_to :users
 belongs_to :groups
 
 ## groupsテーブル
-|group_name|string|null: false|
+|name|string|null: false|
 ### Association
 has_many :users, through: :groups_users
 
