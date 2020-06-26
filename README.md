@@ -18,8 +18,8 @@ has_many :groups_users
 |user_id|integer|null:false, foreign: true|
 |group_id|integer|null:false, foreign: true|
 ### Association
-has_many :users
-has_many :groups
+belongs_to :users
+belongs_to :groups
 
 ## groupsテーブル
 |group_name|string|null: false|
