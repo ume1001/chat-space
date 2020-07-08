@@ -1,27 +1,27 @@
 $(function(){
   function buildHTML(message){
     if ( message.image ) {
-      let html = 
-        `<div class ="MessageBox">
-            <div class ="MessageInfo">
-              <div class ="MessageInfo__userName">
-                ${message.user.name}
-              </div>
-              <div class ="MessageInfo__date">
-                ${message.created_at}
-              </div>
+      let html =
+        `<div class="MessageBox" data-message-id=${message.id}>
+          <div class="MessageInfo">
+            <div class="MessageInfo__userName">
+              ${message.user_name}
             </div>
-            <div class ="Message">
-              <P class ="Message__content">
-                ${message.content}
-              </p>
-              <img class="Message__image" src="${message.image}">
+            <div class="MessageInfo__date">
+              ${message.created_at}
             </div>
-          </div>`
+          </div>
+          <div class="Message">
+            <p class="Message__content">
+              ${message.content}
+            </p>
+            <img class="Message__image" src="${message.image}">
+          </div>
+        </div>`
       return html;
     } else {
       let html =
-      `<div class="MessageBox">
+      `<div class="MessageBox" data-message-id=${message.id}>
         <div class="MessageInfo">
           <div class="MessageInfo__userName">
             ${message.user_name}
@@ -41,9 +41,9 @@ $(function(){
   }
 
   $('.Form').on('submit', function(e){
-    e.preventDefault()
-    let formData = new FormData(this)
-    let url = $(this).attr('action')
+    e.preventDefault();
+    let formData = new FormData(this);
+    let url = $(this).attr('action');
     $.ajax({
       url: url,
       type: "POST",
@@ -52,15 +52,16 @@ $(function(){
       processData: false,
       contentType: false
     })
-    .done(function(post){
-      let html = buildHTML(post)
-      $('.MessageField').append(html)
+    .done(function(data){
+      let html = buildHTML(data);
+      $('.MessageField').append(html);      
       $('form')[0].reset();
       $('.MessageField').animate({ scrollTop: $('.MessageField')[0].scrollHeight});
-      $('.Form__submit').prop('disabled', false);
+      $('.Form__submit').prop("disabled", false);
     })
     .fail(function() {
       alert("メッセージ送信に失敗しました");
+      $('.Form__submit').prop("disabled", false);
     });
   });
 });
